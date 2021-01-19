@@ -1,3 +1,4 @@
+import { getTranslation } from "../translations";
 import {
   DURATION,
   MOVIE_NAME,
@@ -8,23 +9,23 @@ import {
 
 export const MovieFilter = [
   {
-    displayName: "Name",
+    displayName: getTranslation("movie.name"),
     sortName: MOVIE_NAME,
   },
   {
-    displayName: "Release date",
+    displayName: getTranslation("movie.release"),
     sortName: RELEASE_DATE,
   },
   {
-    displayName: "Duration",
+    displayName: getTranslation("movie.duration"),
     sortName: DURATION,
   },
   {
-    displayName: "Rating",
+    displayName: getTranslation("movie.averageRating"),
     sortName: RATING,
   },
   {
-    displayName: "Actors",
+    displayName: getTranslation("movie.actors"),
     sortName: ACTORS,
   },
 ];

@@ -4,3 +4,5 @@ export * from "./LoginAndRegister";
 export * from "./MovieTable";
 export * from "./SortBar";
 export * from "./LoginAndRegister";
+export * from "./Loading";
+export * from "./ErrorHandler";

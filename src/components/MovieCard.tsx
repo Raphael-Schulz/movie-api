@@ -19,6 +19,9 @@ import { Movie } from "../models";
 import { useMutation } from "@apollo/client";
 import { DELETE_MOVIE_MUTATION } from "../queries";
 import { EditMovie } from "./index";
+import { formatDate, MAX_MOVIE_RATING } from "../constants";
+import { RateMovie } from "./RateMovie";
+import { getTranslation } from "../translations";
 
 interface ContainerProps {
   movie: Movie;
@@ -30,29 +33,39 @@ export const MovieCard: React.FC<ContainerProps> = (props) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
 
-  const [deleteMovie, {}] = useMutation(DELETE_MOVIE_MUTATION, {
-    onCompleted({}) {},
+  const [deleteMovie] = useMutation(DELETE_MOVIE_MUTATION, {
+    update(cache) {
+      cache.modify({
+        fields: {
+          movies(existingMovies = [], { readField }) {
+            return existingMovies.filter(
+              (movieRef: any) => props.movie._id !== readField("_id", movieRef)
+            );
+          },
+        },
+      });
+    },
   });
 
   const CardContent = (
     <IonCardContent>
       <IonItem>
-        <IonLabel>Relase date</IonLabel>
-        {props.movie.release}
+        <IonLabel>{getTranslation("movie.release")}</IonLabel>
+        {formatDate(props.movie.release)}
       </IonItem>
       <IonItem>
-        <IonLabel>Duration</IonLabel>
-        {props.movie.duration} minutes
+        <IonLabel>{getTranslation("movie.duration")}</IonLabel>
+        {props.movie.duration + getTranslation("minutes")}
       </IonItem>
 
       <IonItem>
-        <IonLabel>Average User Rating</IonLabel>
+        <IonLabel>{getTranslation("movie.rating")}</IonLabel>
         {props.movie.average_rating
-          ? props.movie.average_rating + " / 5.00"
+          ? props.movie.average_rating + " / " + MAX_MOVIE_RATING + ".00"
           : "-"}
       </IonItem>
       <IonItem>
-        <IonLabel position="stacked">Actors</IonLabel>
+        <IonLabel>{getTranslation("movie.actors")}</IonLabel>
         {props.movie.actors}
       </IonItem>
     </IonCardContent>
@@ -69,6 +82,17 @@ export const MovieCard: React.FC<ContainerProps> = (props) => {
           setParentShowModal={setShowEditModal}
         ></EditMovie>
       </IonModal>
+
+      <IonModal
+        isOpen={showRatingModal}
+        onDidDismiss={() => setShowRatingModal(false)}
+      >
+        <RateMovie
+          movie={props.movie}
+          setParentShowModal={setShowRatingModal}
+        ></RateMovie>
+      </IonModal>
+
       <IonCard>
         <IonCardHeader className="ion-no-padding">
           <IonGrid>
@@ -88,15 +112,13 @@ export const MovieCard: React.FC<ContainerProps> = (props) => {
                 <IonButtons className="ion-float-right">
                   <IonButton
                     onClick={() => {
-                      console.log("star");
+                      setShowRatingModal(true);
                     }}
                   >
                     <IonIcon slot="icon-only" icon={star} />
                   </IonButton>
                   <IonButton
                     onClick={() => {
-                      console.log("Why");
-                      console.log(showEditModal ? "True" : "False");
                       setShowEditModal(true);
                     }}
                   >

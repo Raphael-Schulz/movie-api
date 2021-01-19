@@ -2,9 +2,21 @@ import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import { IonApp, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import {
+  AUTHORIZATION,
+  DASHBOARD_ROUTE,
+  LOGIN_ROUTE,
+  SERVER_URL,
+} from "./constants";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -24,10 +36,23 @@ import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 
+const httpLink = createHttpLink({
+  uri: SERVER_URL,
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem(AUTHORIZATION);
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
+
 const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql",
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
-  credentials: "include",
 });
 
 const App: React.FC = () => (
@@ -35,11 +60,11 @@ const App: React.FC = () => (
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
-          <Route path="/login" component={Login} exact={true} />
-          <Route path="/dashboard" component={Dashboard} exact={true} />
+          <Route path={LOGIN_ROUTE} component={Login} exact={true} />
+          <Route path={DASHBOARD_ROUTE} component={Dashboard} exact={true} />
           <Route
             path="/"
-            render={() => <Redirect to="/dashboard" />}
+            render={() => <Redirect to={DASHBOARD_ROUTE} />}
             exact={true}
           />
         </IonRouterOutlet>

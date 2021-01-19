@@ -1,9 +1,36 @@
 {
-    "movie.name": "Movie Name",
+    "movie.name": "Name",
+    "movie.release": "Release Date",
     "movie.duration": "Duration",
+    "movie.actors": "Actors",
+    "movie.averageRating": "Average Rating",
 
+    "movie.add": "Add Movie",
+    "movie.edit": "Edit Movie",
+    "movie.create": "Create Movie",
 
+    "quit": "Quit",
+    "rate": "Rate",
+    "save": "Save",
+
+    "minutes": "minutes",
+
+    "username": "Username",
+    "password": "Password",
     "login": "Login",
-    "register": "Create Account"
+    "register": "Create Account",
+    "logout": "Logout",
+    "current.user": "Current User",
+
+    "footnote.login.start": "Not regeistered yet? Click ",
+    "footnote.login.link": "here",
+    "footnote.login.end": " to create an account.",
+
+    "footnote.register.start": "Already have an account? Click ",
+    "footnote.register.link": "here",
+    "footnote.register.end": " to login.",
+
+    "loading.handler.message": "Please wait...",
+    "error.handler.message": "An unexpected error occurred. Redirecting to Dashboard..."
 
 }

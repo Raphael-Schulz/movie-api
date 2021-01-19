@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { IonModal } from "@ionic/react";
 import {
   DEFAULT_SORT,
   MovieFilter,
@@ -10,9 +9,10 @@ import {
 } from "../constants";
 import { SortBar, MovieCard } from "./index";
 import { MOVIES_QUERY } from "../queries";
-
 import { useQuery } from "@apollo/client";
 import { Movie } from "../models";
+import { Loading } from "./Loading";
+import { ErrorHandler } from "./ErrorHandler";
 
 export const MovieTable: React.FC = () => {
   const [selectedSortField, setSelectedSortField] = useState(() => {
@@ -49,13 +49,9 @@ export const MovieTable: React.FC = () => {
     setDirection(newDirection);
   }
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading />;
 
-  if (error) {
-    return <p>Error</p>;
-  }
-
-  console.log(data.movies);
+  if (error) return <ErrorHandler />;
 
   return (
     <>

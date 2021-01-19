@@ -1,7 +1,7 @@
 export interface Movie {
   _id: string;
   name: string;
-  release: string;
+  release: Date;
   duration: number;
   actors: string;
   average_rating: number;
@@ -10,7 +10,7 @@ export interface Movie {
 export interface MovieEdit {
   _id: string;
   name: string;
-  release: string;
+  release: Date;
   duration: number;
   actors: string;
 }
@@ -19,7 +19,7 @@ export function newMovieEdit(): MovieEdit {
   return {
     _id: "",
     name: "",
-    release: "",
+    release: new Date(),
     duration: 0,
     actors: "",
   };

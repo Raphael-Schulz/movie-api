@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   IonContent,
   IonHeader,
@@ -10,52 +10,78 @@ import {
   IonButtons,
   IonButton,
   IonIcon,
+  IonModal,
+  useIonViewDidLeave,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
-import { MovieTable } from "../components";
+import { MovieTable, EditMovie, Loading } from "../components";
 import { addCircleOutline } from "ionicons/icons";
-import { useQuery, useMutation } from "@apollo/client";
-import { USER_INFORMATION_QUERY, LOGOUT_MUTATION } from "../queries";
+import { useQuery, useApolloClient } from "@apollo/client";
+import { USER_INFORMATION_QUERY } from "../queries";
+import { AUTHORIZATION, LOGIN_ROUTE } from "../constants";
+import { getTranslation } from "../translations";
 
 const Dashboard: React.FC = () => {
+  const client = useApolloClient();
   const history = useHistory();
+  const [showNewMovieModal, setShowNewMovieModal] = useState(false);
+
   const { loading, error, data } = useQuery(USER_INFORMATION_QUERY);
 
-  const [logout, {}] = useMutation(LOGOUT_MUTATION, {
-    onCompleted({}) {
-      history.replace("/login");
-    },
+  useIonViewDidLeave(() => {
+    client.clearStore().then(() => {
+      client.resetStore();
+    });
   });
 
-  if (loading) return <p>Loading...</p>;
+  function logout() {
+    localStorage.removeItem(AUTHORIZATION);
+    history.replace(LOGIN_ROUTE);
+  }
+
+  if (loading) return <Loading />;
 
   if (error) {
-    history.replace("/login");
+    history.replace(LOGIN_ROUTE);
     return <p>Error</p>;
   }
 
-  console.log(data);
   return (
     <IonPage>
+      <IonModal
+        isOpen={showNewMovieModal}
+        onDidDismiss={() => setShowNewMovieModal(false)}
+      >
+        <EditMovie
+          movie={null}
+          setParentShowModal={setShowNewMovieModal}
+        ></EditMovie>
+      </IonModal>
       <IonHeader>
         <IonToolbar>
           <IonItem>
             <IonAvatar slot="start">
-              <img src="assets/popcorn.svg" alt="Current User" />
+              <img src="assets/popcorn.svg" alt={getTranslation("current.user")} />
             </IonAvatar>
-            <IonLabel slot="start">{data.currentUser.username}</IonLabel>
+            <IonLabel>{data.currentUser.username}</IonLabel>
+          </IonItem>
+          <IonButtons slot="end">
             <IonButton
+              slot="start"
+              onClick={() => {
+                setShowNewMovieModal(true);
+              }}
+            >
+              <IonIcon slot="end" icon={addCircleOutline} />
+              {getTranslation("movie.add")}
+            </IonButton>
+            <IonButton
+              color="medium"
               onClick={() => {
                 logout();
               }}
             >
-              {" "}
-              Logout
-            </IonButton>
-          </IonItem>
-          <IonButtons slot="end">
-            <IonButton slot="start" onClick={() => {}}>
-              <IonIcon slot="end" icon={addCircleOutline} /> Add Movie
+              {getTranslation("logout")}
             </IonButton>
           </IonButtons>
         </IonToolbar>

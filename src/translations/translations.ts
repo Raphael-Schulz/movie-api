@@ -1,13 +1,9 @@
-import * as translationFile from "./en.json";
+import translationFile from "./en.json";
 
-export function getTranslation(id: string): string | null {
+export function getTranslation(id: string): string {
   const key = id as keyof typeof translationFile;
-  console.log(key);
-  console.log(translationFile["login"]);
-  
-  let translation = translationFile[key];
 
-  console.log(translation);
+  let translation = translationFile[key];
 
   if (!translation) {
     translation = id;
