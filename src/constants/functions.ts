@@ -1,4 +1,4 @@
-import { ENGLISH, GERMAN } from "./constants";
+import { ENGLISH, GERMAN } from "./config";
 import { LANGUAGE } from "./localStorage";
 
 export function formatDate(date: Date): string {

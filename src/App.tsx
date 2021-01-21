@@ -13,6 +13,7 @@ import { setContext } from "@apollo/client/link/context";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import {
+  APOLLO_CLIENT,
   AUTHORIZATION,
   DASHBOARD_ROUTE,
   LOGIN_ROUTE,
@@ -41,48 +42,7 @@ import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 
-const httpLink = createHttpLink({
-  uri: SERVER_URL,
-});
-
-const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem(AUTHORIZATION);
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : "",
-    },
-  };
-});
-
-const wsLink = new WebSocketLink({
-  uri: WEB_SOCKET_URL,
-  options: {
-    reconnect: true,
-    connectionParams: {
-      authorization: localStorage.getItem(AUTHORIZATION)
-        ? `Bearer ${localStorage.getItem(AUTHORIZATION)}`
-        : "",
-    },
-  },
-});
-
-const splitLink = split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === "OperationDefinition" &&
-      definition.operation === "subscription"
-    );
-  },
-  wsLink,
-  authLink.concat(httpLink)
-);
-
-const client = new ApolloClient({
-  link: splitLink,
-  cache: new InMemoryCache(),
-});
+const client = APOLLO_CLIENT;
 
 const App: React.FC = () => (
   <ApolloProvider client={client}>
