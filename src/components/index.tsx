@@ -6,3 +6,4 @@ export * from "./SortBar";
 export * from "./LoginAndRegister";
 export * from "./Loading";
 export * from "./ErrorHandler";
+export * from "./LanguageSelection";

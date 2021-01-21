@@ -68,12 +68,18 @@ export const UPDATE_MOVIE_MUTATION = gql`
 `;
 
 export const ADD_NEW_MOVIE_TO_CACHE = gql`
-fragment NewMovie on Movie {
-  _id
-  name
-  release
-  duration
-  actors
-  average_rating
-}
+  fragment NewMovie on Movie {
+    _id
+    name
+    release
+    duration
+    actors
+    average_rating
+  }
+`;
+
+export const MOVIE_CHANGED_SUBSCRIPTION = gql`
+  subscription movieChanged {
+    movieChanged
+  }
 `;

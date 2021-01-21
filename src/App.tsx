@@ -7,6 +7,7 @@ import {
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
+  split,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import Login from "./pages/Login";
@@ -16,7 +17,11 @@ import {
   DASHBOARD_ROUTE,
   LOGIN_ROUTE,
   SERVER_URL,
+  WEB_SOCKET_URL,
 } from "./constants";
+
+import { getMainDefinition } from "@apollo/client/utilities";
+import { WebSocketLink } from "@apollo/client/link/ws";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -50,8 +55,32 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const wsLink = new WebSocketLink({
+  uri: WEB_SOCKET_URL,
+  options: {
+    reconnect: true,
+    connectionParams: {
+      authorization: localStorage.getItem(AUTHORIZATION)
+        ? `Bearer ${localStorage.getItem(AUTHORIZATION)}`
+        : "",
+    },
+  },
+});
+
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
+    );
+  },
+  wsLink,
+  authLink.concat(httpLink)
+);
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: splitLink,
   cache: new InMemoryCache(),
 });
 

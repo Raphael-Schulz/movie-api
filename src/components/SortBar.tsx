@@ -10,6 +10,7 @@ import React from "react";
 import { arrowDown, arrowUp } from "ionicons/icons";
 import { Field } from "../models";
 import { SORT_DESC } from "../constants";
+import { getTranslation } from "../translations";
 
 interface ContainerProps {
   filterDefinition: Array<Field>;
@@ -35,7 +36,7 @@ export const SortBar: React.FC<ContainerProps> = (props) => {
               ) : (
                 ""
               )}
-              <IonLabel>{field.displayName}</IonLabel>
+              <IonLabel>{getTranslation(field.displayName)}</IonLabel>
             </IonChip>
           ))}
         </IonCol>

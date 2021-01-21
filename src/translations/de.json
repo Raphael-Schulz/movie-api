@@ -1,0 +1,36 @@
+{
+    "movie.name": "Name",
+    "movie.release": "Veröffentlichungsdatum",
+    "movie.duration": "Dauer",
+    "movie.actors": "Schauspieler",
+    "movie.rating": "Durschnittliche Bewertung",
+
+    "movie.add": "Film hinzufügen",
+    "movie.edit": "Film bearbeiten",
+    "movie.create": "Film erstellen",
+
+    "quit": "Abberchen",
+    "rate": "Bewerten",
+    "save": "Speichern",
+
+    "minutes": " Minuten",
+
+    "username": "Benutzername",
+    "password": "Passwort",
+    "login": "Einloggen",
+    "register": "Account erstellen",
+    "logout": "Ausloggen",
+    "current.user": "Aktueller Nutzer",
+
+    "footnote.login.start": "Noch nicht registriert? Klicke ",
+    "footnote.login.link": "hier",
+    "footnote.login.end": " um einen Account zu erstellen.",
+
+    "footnote.register.start": "Du hast bereits einen Account? Klicke ",
+    "footnote.register.link": "hiere",
+    "footnote.register.end": " um dich einzuloggen.",
+
+    "loading.handler.message": "Bitte warten...",
+    "error.handler.message": "Ein unerwarteter Fehler ist aufgetreten. Leite zur Dashboardseite weiter..."
+
+}

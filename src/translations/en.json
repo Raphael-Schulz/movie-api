@@ -3,7 +3,7 @@
     "movie.release": "Release Date",
     "movie.duration": "Duration",
     "movie.actors": "Actors",
-    "movie.averageRating": "Average Rating",
+    "movie.rating": "Average Rating",
 
     "movie.add": "Add Movie",
     "movie.edit": "Edit Movie",
@@ -13,7 +13,7 @@
     "rate": "Rate",
     "save": "Save",
 
-    "minutes": "minutes",
+    "minutes": " minutes",
 
     "username": "Username",
     "password": "Password",
