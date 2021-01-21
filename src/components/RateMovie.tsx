@@ -7,6 +7,7 @@ import {
   IonButton,
   IonButtons,
   IonIcon,
+  IonText,
 } from "@ionic/react";
 import { Movie } from "../models";
 import { useMutation, useQuery } from "@apollo/client";
@@ -30,7 +31,8 @@ export const RateMovie: React.FC<ContainerProps> = (props) => {
   const { loading, error, data } = useQuery(MOVIE_RATING_QUERY, {
     variables: { movieId: props.movie._id },
   });
-  const [rating, setRating] = useState(3);
+  const [rating, setRating] = useState(0);
+  const [showValidationError, setShowValidationError] = useState(false);
 
   const [saveMovieRating] = useMutation(SAVE_MOVIE_RATING_MUTATION, {
     update(cache, { data: { saveMovieRating } }) {
@@ -85,6 +87,19 @@ export const RateMovie: React.FC<ContainerProps> = (props) => {
             <IonCol>{stars}</IonCol>
           </IonButtons>
         </IonRow>
+
+        {showValidationError ? (
+          <IonRow className="ion-text-center">
+            <IonCol>
+              <IonText color="danger">
+                {getTranslation("rating.validation.error")}
+              </IonText>
+            </IonCol>
+          </IonRow>
+        ) : (
+          ""
+        )}
+
         <IonRow className="ion-padding-top ion-justify-content-evenly">
           <IonCol className="ion-text-center">
             <IonButton
@@ -100,13 +115,17 @@ export const RateMovie: React.FC<ContainerProps> = (props) => {
             <IonButton
               color="success"
               onClick={() => {
-                saveMovieRating({
-                  variables: {
-                    _id: data && data.movieRating && data.movieRating._id,
-                    movieId: props.movie._id,
-                    rating: rating,
-                  },
-                });
+                if (rating === 0) {
+                  setShowValidationError(true);
+                } else {
+                  saveMovieRating({
+                    variables: {
+                      _id: data && data.movieRating && data.movieRating._id,
+                      movieId: props.movie._id,
+                      rating: rating,
+                    },
+                  });
+                }
               }}
             >
               {getTranslation("rate")}

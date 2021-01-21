@@ -2,27 +2,10 @@ import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import { IonApp, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  createHttpLink,
-  split,
-} from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
+import { ApolloProvider } from "@apollo/client";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import {
-  APOLLO_CLIENT,
-  AUTHORIZATION,
-  DASHBOARD_ROUTE,
-  LOGIN_ROUTE,
-  SERVER_URL,
-  WEB_SOCKET_URL,
-} from "./constants";
-
-import { getMainDefinition } from "@apollo/client/utilities";
-import { WebSocketLink } from "@apollo/client/link/ws";
+import { APOLLO_CLIENT, DASHBOARD_ROUTE, LOGIN_ROUTE } from "./constants";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
