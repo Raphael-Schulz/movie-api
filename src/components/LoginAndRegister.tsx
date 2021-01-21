@@ -24,7 +24,6 @@ export const LoginAndRegister: React.FC = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const [serverError, setServerError] = useState("");
   const [languageChanged, setLanguageChanged] = useState(false);
 
@@ -32,7 +31,6 @@ export const LoginAndRegister: React.FC = () => {
     onCompleted(data) {
       if (data.login.token) {
         localStorage.setItem(AUTHORIZATION, data.login.token);
-        resetUserInput();
         history.replace(DASHBOARD_ROUTE);
       }
     },
@@ -43,17 +41,11 @@ export const LoginAndRegister: React.FC = () => {
     {
       onCompleted(data) {
         if (data.register.username) {
-          resetUserInput();
           setShowRegister(false);
         }
       },
     }
   );
-
-  function resetUserInput(): void {
-    setUsername("");
-    setPassword("");
-  }
 
   function handleTextChange(event: Event, setState: Function): void {
     const target = event.target as HTMLInputElement;
@@ -64,14 +56,18 @@ export const LoginAndRegister: React.FC = () => {
 
   function tryLoginOrRegister(loginOrRegister: Function): void {
     setServerError("");
+    const usernameInput = username;
+    const passwordInput = password;
+    setUsername("");
+    setPassword("");
+
     loginOrRegister({
       variables: {
-        username: username,
-        password: password,
+        username: usernameInput,
+        password: passwordInput,
       },
     }).catch((error: Error) => {
       setServerError(error.message);
-      resetUserInput();
     });
   }
 
